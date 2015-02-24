@@ -1,0 +1,149 @@
+<project name="univer" default="all">
+
+
+	<property name="encoding" value="UTF-8"/>
+
+	<property name="build" value="build"/>
+	<property name="classes" value="${build}/classes"/>
+	<property name="jars" value="${build}/jars"/>
+	<property name="jar" value="${jars}/PlayersBasePrices.jar"/>
+	<property name="lib" value="lib"/>
+	<property name="main" value="vsol.Runner"/>
+	<property name="src" value="src"/>
+
+
+	<path id="classpath">
+		<fileset dir="${lib}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+
+	<target name="clean">
+		<delete dir="${build}"/>
+	</target>
+
+	<target name="mkdir" depends="clean">
+		<mkdir dir="${classes}"/>
+	</target>
+
+	<target name="make" depends="mkdir">
+		<javac 	srcdir="${src}" 
+				classpathref="classpath" 
+				destdir="${classes}" 
+				encoding="${encoding}" 
+		>
+			<include name="vsol/*"/>
+		</javac>
+	</target>
+
+	<target name="jar" depends="make">
+		<mkdir dir="${jars}"/>		
+		<jar destfile="${jar}" >
+			<fileset dir="${classes}" />
+<!--
+			<zipfileset includes="**/*" src="${lib}/junit-4.4.jar"/>
+			<zipfileset includes="**/*" src="${lib}/filterbuilder.jar"/>
+			<zipfileset includes="**/*" src="${lib}/htmllexer.jar"/>
+			<zipfileset includes="**/*" src="${lib}/htmlparser.jar"/>
+			<zipfileset includes="**/*" src="${lib}/sitecapturer.jar"/>
+			<zipfileset includes="**/*" src="${lib}/thumbelina.jar"/>
+-->
+			<manifest>
+				<attribute name="Main-Class" value="${main}"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run" depends="jar">
+		<java jar="${jar}" fork="true"/>
+	</target>
+
+	<target name="all" depends="run"></target>
+
+<!--
+	<property name="lib" value="lib"/>
+	<property name="jdbc" value="mysql-connector-java-5.1.33-bin.jar"/>
+	<property name="servlet" value="servlet-2.5-api.jar"/>
+	<property name="jstl" value="jstl-1.2.jar"/>
+	<property name="jsp" value="jsp-api.jar"/>
+	<property name="classes" value="${build}/classes"/>
+	<property name="jars" value="${build}/jars"/>
+	<property name="jar" value="${jars}/univer.jar"/>
+	<property name="main" value="students.frame.StudentsFrame"/>
+	<property name="wars" value="${build}/war"/>
+	<property name="war" value="${wars}/vsol.war"/>
+	<property name="url" value="http://localhost:8080/manager"/>
+
+	<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask"/>
+	<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask"/>
+
+	<path id="web.classpath">
+		<fileset dir="${lib}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+
+
+	<target name="deploy" depends="war, undeploy">
+		<deploy
+				url="${url}"
+				username="admin"
+				password="admin"
+				path="/vsol"
+				war="file:${war}"
+		/>
+	</target>
+
+	<target name="war" depends="make">
+		<mkdir dir="${wars}"/>		
+		<war destfile="${war}" webxml="res/web/WEB-INF/web.xml">
+			<fileset dir="res/web"/>
+			<classes dir="${classes}">
+				<include name="vsol/*"/>
+				<include name="vsol/controller/*"/>
+				<include name="vsol/dao/*"/>
+				<include name="vsol/model/*"/>
+				<include name="vsol/util/*"/>
+				<include name="vsol/view/*"/>
+			</classes>
+			<lib dir="${lib}">
+				<exclude name="${servlet}"/>
+			</lib>
+		</war>
+	</target>
+
+	<target name="make" depends="mkdir">
+		<javac 	srcdir="${src}" 
+				classpathref="web.classpath" 
+				destdir="${classes}" 
+				encoding="${encoding}" 
+		>
+			<include name="vsol/*"/>
+			<include name="vsol/controller/*"/>
+			<include name="vsol/dao/*"/>
+			<include name="vsol/model/*"/>
+			<include name="vsol/util/*"/>
+			<include name="vsol/view/*"/>
+		</javac>
+	</target>
+
+	<target name="mkdir" depends="clean">
+		<mkdir dir="${classes}"/>
+	</target>
+
+	<target name="clean">
+		<delete dir="${build}"/>
+	</target>
+
+	<target name="undeploy">
+		<undeploy
+				url="${url}"
+				username="admin"
+				password="admin"
+				path="/vsol"
+		/>
+	</target>
+-->	
+</project>
